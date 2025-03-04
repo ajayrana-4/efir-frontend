@@ -4,7 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 
-const HomePage = () => {
+const HomePage = ({ user, logout }) => {
   const location = useLocation();
 
   useEffect(() => {
@@ -16,9 +16,82 @@ const HomePage = () => {
     }
   }, [location]);
 
+  // If user is logged in, show a dashboard-style home page
+  if (user) {
+    return (
+      <div className="d-flex flex-column min-vh-100">
+        <Header user={user} logout={logout} />
+        
+        {/* User Welcome Section */}
+        <section className="bg-primary text-white py-5">
+          <Container>
+            <Row className="align-items-center">
+              <Col lg={8} className="mx-auto text-center">
+                <h1 className="display-4 fw-bold mb-3">
+                  Welcome, {user.name}
+                </h1>
+                <p className="lead mb-4">
+                  Access all FIR services from your dashboard. What would you like to do today?
+                </p>
+              </Col>
+            </Row>
+          </Container>
+        </section>
+        
+        {/* FIR Services Section */}
+        <section className="py-5">
+          <Container>
+            <h2 className="text-center mb-4">FIR Services</h2>
+            <Row className="justify-content-center">
+              <Col md={4} className="mb-3">
+                <Card className="h-100 text-center shadow-sm">
+                  <Card.Body>
+                    <div className="mb-3">
+                      <i className="fas fa-file-alt text-primary fa-3x"></i>
+                    </div>
+                    <h5>Register New FIR</h5>
+                    <p className="text-muted">File a complaint by registering a new FIR.</p>
+                    <Button as={Link} to="/register-fir" variant="primary">Register FIR</Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col md={4} className="mb-3">
+                <Card className="h-100 text-center shadow-sm">
+                  <Card.Body>
+                    <div className="mb-3">
+                      <i className="fas fa-search text-primary fa-3x"></i>
+                    </div>
+                    <h5>Check FIR Status</h5>
+                    <p className="text-muted">Check the status of any filed FIR.</p>
+                    <Button as={Link} to="/fir-enquiry" variant="primary">Check Status</Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+              <Col md={4} className="mb-3">
+                <Card className="h-100 text-center shadow-sm">
+                  <Card.Body>
+                    <div className="mb-3">
+                      <i className="fas fa-list text-primary fa-3x"></i>
+                    </div>
+                    <h5>View Your FIRs</h5>
+                    <p className="text-muted">Access all FIRs you have registered.</p>
+                    <Button as={Link} to="/my-firs" variant="primary">My FIRs</Button>
+                  </Card.Body>
+                </Card>
+              </Col>
+            </Row>
+          </Container>
+        </section>
+        
+        <Footer />
+      </div>
+    );
+  }
+
+  // Non-logged in view (original home page)
   return (
     <div className="d-flex flex-column min-vh-100">
-      <Header />
+      <Header user={user} logout={logout} />
       
       {/* Hero Section */}
       <section className="bg-primary text-white py-5">

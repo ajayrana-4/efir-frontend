@@ -11,7 +11,7 @@ import RegisterPage from './pages/RegisterPage';
 import EnquiryPage from './pages/EnquiryPage';
 import RegisterFIRPage from './pages/RegisterFIRPage';
 import FIREnquiryPage from './pages/FIREnquiryPage';
-import MyFIRsPage from './pages/MYFIRsPage';
+import MYFIRsPage from './pages/MYFIRsPage'; // Fixed casing here (was MYFIRsPage)
 import FIRDetailsPage from './pages/FIRDetailsPage';
 import ProfilePage from './pages/ProfilePage';
 
@@ -53,6 +53,11 @@ function App() {
     return children;
   };
 
+  // Add debugging to monitor user state changes
+  useEffect(() => {
+    console.log("Authentication state changed:", { isAuthenticated, user });
+  }, [isAuthenticated, user]);
+
   return (
     <Router>
       <ToastContainer position="top-right" autoClose={3000} />
@@ -83,7 +88,7 @@ function App() {
           path="/my-firs" 
           element={
             <ProtectedRoute>
-              <MyFIRsPage user={user} logout={logout} />
+              <MYFIRsPage user={user} logout={logout} />
             </ProtectedRoute>
           } 
         />

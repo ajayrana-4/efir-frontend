@@ -1,16 +1,29 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import { FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
 
 const Header = ({ user, logout }) => {
   const navigate = useNavigate();
+  const location = useLocation();
   
   const handleLogout = () => {
     if (logout) {
       logout();
     }
     navigate('/');
+  };
+
+  const handleAboutClick = (e) => {
+    e.preventDefault();
+    
+    // If we're already on the home page, just scroll to the section
+    if (location.pathname === '/') {
+      document.getElementById('about-section')?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      // Otherwise navigate to home page with query parameter
+      navigate('/?scrollTo=about');
+    }
   };
 
   return (
@@ -30,8 +43,7 @@ const Header = ({ user, logout }) => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/">Home</Nav.Link>
-            <Nav.Link as={Link} to="/about">About</Nav.Link>
-            <Nav.Link as={Link} to="/enquiry">Enquiry</Nav.Link>
+            <Nav.Link href="#" onClick={handleAboutClick}>About</Nav.Link>
             
             {/* Add these links that only appear when user is logged in */}
             {user && (
