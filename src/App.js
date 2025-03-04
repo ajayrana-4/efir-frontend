@@ -11,7 +11,7 @@ import RegisterPage from './pages/RegisterPage';
 import EnquiryPage from './pages/EnquiryPage';
 import RegisterFIRPage from './pages/RegisterFIRPage';
 import FIREnquiryPage from './pages/FIREnquiryPage';
-import MYFIRsPage from './pages/MYFIRsPage'; // Fixed casing here (was MYFIRsPage)
+import MYFIRsPage from './pages/MYFIRsPage';
 import FIRDetailsPage from './pages/FIRDetailsPage';
 import ProfilePage from './pages/ProfilePage';
 
@@ -43,6 +43,12 @@ function App() {
     localStorage.removeItem('user');
     setUser(null);
     setIsAuthenticated(false);
+  };
+  
+  // Update user function for profile changes
+  const updateUser = (updatedUserData) => {
+    localStorage.setItem('user', JSON.stringify(updatedUserData));
+    setUser(updatedUserData);
   };
   
   // Protected route component
@@ -104,7 +110,7 @@ function App() {
           path="/profile" 
           element={
             <ProtectedRoute>
-              <ProfilePage user={user} logout={logout} />
+              <ProfilePage user={user} logout={logout} updateUser={updateUser} />
             </ProtectedRoute>
           } 
         />

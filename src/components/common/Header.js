@@ -19,7 +19,14 @@ const Header = ({ user, logout }) => {
     
     // If we're already on the home page, just scroll to the section
     if (location.pathname === '/') {
-      document.getElementById('about-section')?.scrollIntoView({ behavior: 'smooth' });
+      const aboutSection = document.getElementById('about-section');
+      if (aboutSection) {
+        aboutSection.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        console.log("About section not found on page");
+        // Fallback to navigate to homepage with query param
+        navigate('/?scrollTo=about');
+      }
     } else {
       // Otherwise navigate to home page with query parameter
       navigate('/?scrollTo=about');
@@ -43,7 +50,12 @@ const Header = ({ user, logout }) => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link as={Link} to="/">Home</Nav.Link>
-            <Nav.Link href="#" onClick={handleAboutClick}>About</Nav.Link>
+            
+            {location.pathname === '/' ? (
+              <Nav.Link href="#about-section">About</Nav.Link>
+            ) : (
+              <Nav.Link href="#" onClick={handleAboutClick}>About</Nav.Link>
+            )}
             
             {/* Add these links that only appear when user is logged in */}
             {user && (
